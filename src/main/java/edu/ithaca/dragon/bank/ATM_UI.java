@@ -109,10 +109,11 @@ public class ATM_UI {
 
         do {
             System.out.println( "*************************************************\n" +
-                    "               Welcome " + currentAccount.getID() + "            \n" +
-                    "        You may now Withdraw, Deposit, Transfer, or Logout      \n" +
-                    "        Please enter the number corresponding to your choice       \n" +
-                    "                                  \n");
+                                "                     Welcome " + currentAccount.getID() + "            \n" +
+                                "              Your balance is " + currentAccount.getBalance() + "      \n" +
+                                "        You may now Withdraw, Deposit, Transfer, or Logout      \n" +
+                                "        Please enter the number corresponding to your choice       \n" +
+                                "                                  \n");
 
             System.out.print("Enter your choice (1 = Withdraw, 2 = Deposit, 3 = Transfer, 4 = Logout): ");
             int entry = in.nextInt();
