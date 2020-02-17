@@ -12,7 +12,7 @@ public class ATM_UI {
     private static Scanner in;
     private static Account currentAccount;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AccountFrozenException, InsufficientFundsException {
         initializeATM();
 
         while (true) {
@@ -158,9 +158,24 @@ public class ATM_UI {
         currentUIState = ATMUIState.MainLoggedIn;
     }
 
-    static void handleDepositUI() {
+    static void handleDepositUI() throws AccountFrozenException {
         System.out.println("Deposit");
-        currentUIState = ATMUIState.MainLoggedIn;
+        boolean hasLoggedOut = false;
+        do {
+            System.out.println( "*************************************************\n" +
+                    "               Deposit            \n");
+
+            System.out.print("Enter the amount you want to deposit: ");
+            double amount = in.nextDouble();
+            try{
+                currentAccount.deposit(amount);
+                currentUIState = ATMUIState.MainLoggedIn;
+                return;
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        } while(!hasLoggedOut);
     }
 
     static void handleTransferUI() {
