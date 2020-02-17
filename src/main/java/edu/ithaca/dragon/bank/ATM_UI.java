@@ -153,13 +153,26 @@ public class ATM_UI {
         } while(!hasLoggedOut);
     }
 
-    static void handleWithdrawUI() {
-        System.out.println("Withdraw");
-        currentUIState = ATMUIState.MainLoggedIn;
+    static void handleWithdrawUI()  throws AccountFrozenException, InsufficientFundsException{
+        boolean hasLoggedOut = false;
+        do {
+            System.out.println( "*************************************************\n" +
+                    "               Withdraw            \n");
+
+            System.out.print("Enter the amount you want to withdraw: ");
+            double amount = in.nextDouble();
+            try{
+                currentAccount.withdraw(amount);
+                currentUIState = ATMUIState.MainLoggedIn;
+                return;
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        } while(!hasLoggedOut);
     }
 
     static void handleDepositUI() throws AccountFrozenException {
-        System.out.println("Deposit");
         boolean hasLoggedOut = false;
         do {
             System.out.println( "*************************************************\n" +
