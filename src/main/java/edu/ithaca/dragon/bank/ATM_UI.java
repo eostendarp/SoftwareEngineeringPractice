@@ -191,8 +191,24 @@ public class ATM_UI {
         } while(!hasLoggedOut);
     }
 
-    static void handleTransferUI() {
-        System.out.println("Transfer");
-        currentUIState = ATMUIState.MainLoggedIn;
+    static void handleTransferUI()  throws AccountFrozenException, InsufficientFundsException{
+        boolean hasLoggedOut = false;
+        do {
+            System.out.println( "*************************************************\n" +
+                    "               transfer            \n");
+
+            System.out.print("Enter the account id you would like to transfer to and the amount to transfer: ");
+            String id = in.next();
+            double amount = in.nextDouble();
+            try{
+                currentAccount.withdraw(amount);
+                bank.getAccounts().get(id).deposit(amount);
+                currentUIState = ATMUIState.MainLoggedIn;
+                return;
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        } while(!hasLoggedOut);
     }
 }
