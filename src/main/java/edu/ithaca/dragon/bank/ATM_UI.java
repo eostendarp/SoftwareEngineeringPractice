@@ -191,18 +191,31 @@ public class ATM_UI {
         } while(!hasLoggedOut);
     }
 
-    static void handleTransferUI()  throws AccountFrozenException, InsufficientFundsException{
+    static void handleTransferUI() {
         boolean hasLoggedOut = false;
         do {
             System.out.println( "*************************************************\n" +
-                    "               transfer            \n");
-
-            System.out.print("Enter the account id you would like to transfer to and the amount to transfer: ");
+                    "              Transfer            \n");
+            System.out.println("Enter the ID of the account you want to transfer to: ");
             String id = in.next();
+            Account target;
+            try{
+                target = atm.getAccount(id);
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+                currentUIState = ATMUIState.MainLoggedIn;
+                return;
+            }
+            if (target.getFrozenStatus()){
+                System.out.println("Target account is frozen, you cannot transfer to the account.");
+                currentUIState = ATMUIState.MainLoggedIn;
+                return;
+            }
+            System.out.print("Enter the amount you want to transfer: ");
             double amount = in.nextDouble();
             try{
-                currentAccount.withdraw(amount);
-                bank.getAccounts().get(id).deposit(amount);
+                currentAccount.transfer(target, amount);
                 currentUIState = ATMUIState.MainLoggedIn;
                 return;
             }
